@@ -8,11 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello, {{ $name }}!</h1>
-
-    {{ $res }} <br>
-
-    {{ route('admin.post', ['id' => 5]) }}
-
+    <h1> {{$test}} </h1>
 </body>
 </html>
