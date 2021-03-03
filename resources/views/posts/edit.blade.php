@@ -8,8 +8,11 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello, {{ $name }}!</h1>
-    <h2>{{ $res }}</h2>
-
+<form action="{{ route('posts.update', ['id' => $id]) }}" method="post">
+    @csrf
+    @method('PUT')
+    <input type="text" name="text">
+    <button type="submit">Submit</button>
+</form>
 </body>
 </html>

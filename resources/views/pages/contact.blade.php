@@ -8,8 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello, {{ $name }}!</h1>
-    <h2>{{ $res }}</h2>
-
+    <h1>Contact page</h1>
 </body>
 </html>

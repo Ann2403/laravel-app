@@ -9,7 +9,10 @@
 </head>
 <body>
     <h1>Hello, {{ $name }}!</h1>
-    <h2>{{ $res }}</h2>
+
+    {{ $res }} <br>
+
+    {{ route('admin.post', ['id' => 5]) }}
 
 </body>
 </html>
