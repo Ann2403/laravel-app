@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 //При переходе на этот маршрут вызовится метод index класса(контролера) HomeController
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/testpage', [HomeController::class, 'test']);
 
 use App\Http\Controllers\PageController;
 // slug позволяет выводит ту страницу которая соотвествует его названию
