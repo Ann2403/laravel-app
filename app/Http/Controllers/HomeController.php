@@ -2,66 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\Post;
 
 class HomeController extends Controller
 {
 
     public function index()
     {
-        /*получаем таблицу country через конструктор запросов
-        $data = DB::table('country')->get();*/
 
-        /*получаем из таблицы не все данные, а ограничиваемся 5 записями
-        $data = DB::table('country')->limit(5)->get();*/
+        /* ЗАПОЛНЕНИЕ ДАННЫХ
+        //создаем модель
+        $post = new Post();
+        //заполняем поля title и content
+        $post->title = 'Post 4';
+        $post->content = 'Lorem ipsum 4';
+        //сохраняем изменения
+        $post->save();
 
-        /*получаем только колонки 'Name', 'Code' 5 записей
-        $data = DB::table('country')->select('Name', 'Code')->limit(5)->get();*/
+        Post::query()->create(['title' => 'Post 6', 'content' => 'Lorem ipsum 6']);
 
-        /*получаем колонки 'Name', 'Code' только одной записи
-        $data = DB::table('country')->select('Name', 'Code')->first();*/
+        $post = new Post();
+        $post->fill(['title' => 'Post 8', 'content' => 'Lorem ipsum 8']);
+        $post->save();*/
 
-        /*получаем колонки 'Name', 'Code' сортированй таблицы по колонке 'Code' в обратном порядке
-        $data = DB::table('country')->select('Name', 'Code')->orderBy('Code', 'desc')->first();*/
+        /*ВЫВОД ДАННЫХ
+        $data = Country::all();
+        //с моделями можно общаться через конструктор запросов тоже
+        $data = Country::query()->limit(5)->get();
 
-        /*получаем колонки 'Name', 'ID' по первичному ключу
-        $data = DB::table('city')->select('Name', 'ID')->find(2);*/
+        //получаем запись по идентификатору
+        $data = City::query()->find(5);
+        $data = Country::query()->find('AGO');
 
-        /*получаем колонки 'Name', 'ID':
-                                        где колонка 'ID' = 2('=' по умолчанию - его можно не указывать)
-        $data = DB::table('city')->select('Name', 'ID')->where('ID', 2)->get();
-                                        где колонка 'ID' меньше 5
-        $data = DB::table('city')->select('Name', 'ID')->where('ID', '<', 5)->get();
-                                        где 'ID' больше 1 и меньше 5(несколько условий прописываются в массиве внутри общего массива)
-        $data = DB::table('city')->select('Name', 'ID')->where([
-            ['id', '>', 1], ['id', '<', 5]
-        ])->get();*/
+        dd($data);*/
 
-        /*получаем колонку 'Name' первой строки где 'ID' меньше 5
-        $data = DB::table('city')->where('ID', '<', 5)->value('Name');*/
+        /*ОБНОВЛЕНИЕ ДАННЫХ
+        $post = Post::query()->find(3);
+        $post->title = 'Post 3';
+        $post->save();
+        //массовое изменение данных
+        Post::query()->where("id", ">", 3)->update(['updated_at' => NOW()]);*/
 
-        //$data = DB::table('country')->limit(5)->pluck('Name', 'Code');
+        /*УДАЛЕНИЕ ДАННЫХ
+        //при отсутствии заданного идентификатора будет ошибка,
+        //т.к. возвращается null, а у него нету никаких методов
+        $post = Post::query()->find(5);
+        $post->delete();
+        //в данном примере ошибки не будет, т.к. мы обращаемся к объекту которого нету
+        //можно передавать в виде массива либо строки несколько идентификаторов
+        Post::destroy(8);*/
 
-        /*получаем количество строк
-        $data = DB::table('country')->count();*/
-
-        /*получаем максимальное, минимальное, сумму и среднее значение в колонке 'Population'
-        $data = DB::table('country')->max('Population');
-        $data = DB::table('country')->min('Population');
-        $data = DB::table('country')->sum('Population');
-        $data = DB::table('country')->avg('Population');*/
-
-        /*отбрасывает одинаковые записи - предотвращает дублирование
-        получаем колонку 'CountryCode' без повторений одинаковых значений
-        $data = DB::table('city')->select('CountryCode')->distinct()->get();*/
-
-        //обьединяем таблицы 'city' и 'country'  выборкой колонок по признаку 'city.CountryCode' = 'country.Code'
-        // ограничиваясь 10 строками по колонке 'city.ID'
-        $data = DB::table('city')->select('city.ID', 'city.Name as CityName', 'country.Code', 'country.Name as CountryName')
-                ->limit(10)->join('country', 'city.CountryCode', '=', 'country.Code' )
-                ->orderBy('city.ID')->get();
-
-        dd($data);
         //return view('home', ['res' => 30, 'name' => 'Andrey']);
     }
 }
