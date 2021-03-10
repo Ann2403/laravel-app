@@ -6,19 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    /*подсказываем как у нас называется таблица
-    protected $table = 'posts';
-    (по умолчанию ищется таблица по имени модели только в нижнем регистре и множественном числе)
-
-    говорим как у нас называется первичный ключ
-    protected $primaryKey = 'posts_id';
-    что он у нас не автоинкрементирован
-    public $incrementing = false;
-    и что не число, а строка
-    public  $keyType = 'string';
-    (по умолчани это поле должно быть числовым, автоинкрементированным и называться id)
-    говорим чтобы поля "created_at" и "updated_at" автоматически не заполнялись
-    public $timestamps = false;*/
 
     //указываем сто поле "content" будет заполняться по умолчанию
     protected $attributes = [
@@ -29,4 +16,16 @@ class Post extends Model
     //в $guarded указывается черный список
     //чтобы сделать все колонки масово заполняемыми: $guarded = []
     protected $fillable = ['title', 'content'];
+
+    //создаем виртуальное свойство для таблицы posts для получения связаной рубрики
+    public function rubric() {
+        //прописываем связь с таблицей rubrics
+        return $this->belongsTo(Rubric::class);
+    }
+
+    //СВЯЗЬ МНОГИЕ К МНОГИМ
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

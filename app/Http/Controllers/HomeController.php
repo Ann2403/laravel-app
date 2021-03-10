@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
-use App\Models\Country;
 use App\Models\Post;
+use App\Models\Rubric;
+use App\Models\Tag;
 
 class HomeController extends Controller
 {
@@ -12,47 +12,57 @@ class HomeController extends Controller
     public function index()
     {
 
-        /* ЗАПОЛНЕНИЕ ДАННЫХ
-        //создаем модель
-        $post = new Post();
-        //заполняем поля title и content
-        $post->title = 'Post 4';
-        $post->content = 'Lorem ipsum 4';
-        //сохраняем изменения
-        $post->save();
+        //СВЯЗЬ ОДИН К ОДНОМУ
+        /*
+        //выбираем запись с идентификатором 2
+        $post = Post::query()->find(1);
+        //обращаемся к виртуальному свойству для получения title связаной рубрики
+        dump($post->rubric->title);
 
-        Post::query()->create(['title' => 'Post 6', 'content' => 'Lorem ipsum 6']);
+        $rubric = Rubric::query()->find(3);
+        dump($rubric->post->title);
+        */
 
-        $post = new Post();
-        $post->fill(['title' => 'Post 8', 'content' => 'Lorem ipsum 8']);
-        $post->save();*/
+        //СВЯЗЬ ОДИН К МНОГИМ
+        /*$rubric = Rubric::query()->find(3);
+        //распечатаем массив с постами
+        //dump($rubric->posts);
+        $posts = Rubric::query()->find(3)->posts;
+        //получим только название постов и их рубрик с массива
+        foreach ($posts as $post) {
+            //при "ленивой загрузке" выполняются дополнительные sql запросыв количестве =
+            //количестве полученых записей
+            dump($post->title, $post->rubric->title);
+        }
 
-        /*ВЫВОД ДАННЫХ
-        $data = Country::all();
-        //с моделями можно общаться через конструктор запросов тоже
-        $data = Country::query()->limit(5)->get();
+        $post = Post::query()->find(7);
+        dump($post->rubric->title);
+        //получим только название постов и их рубрик с массива
+        $posts = Post::query()->with('rubric')->where('id', '>', '2')->get();
+        foreach ($posts as $post) {
+            //при "жадной загрузке" мы говорим(при помощи метода with) какую связь загрузить сразу
+            // и сокращаем таким образом количество sql запросов
+            dump($post->title, $post->rubric->title);
+        }*/
 
-        //получаем запись по идентификатору
-        $data = City::query()->find(5);
-        $data = Country::query()->find('AGO');
+        //СВЯЗЬ МНОГИЕ К МНОГИМ
+        /*$post = Post::query()->find(7);
+        //выводим название поста
+        dump($post->title);
+        //проходимся массивом по тегам связаными виртуальным свойством tags
+        foreach ($post->tags as $tag) {
+            //и выводим их названия
+            dump($tag->title);
+        }
 
-        dd($data);*/
-
-        /*ОБНОВЛЕНИЕ ДАННЫХ
-        $post = Post::query()->find(3);
-        $post->title = 'Post 3';
-        $post->save();
-        //массовое изменение данных
-        Post::query()->where("id", ">", 3)->update(['updated_at' => NOW()]);*/
-
-        /*УДАЛЕНИЕ ДАННЫХ
-        //при отсутствии заданного идентификатора будет ошибка,
-        //т.к. возвращается null, а у него нету никаких методов
-        $post = Post::query()->find(5);
-        $post->delete();
-        //в данном примере ошибки не будет, т.к. мы обращаемся к объекту которого нету
-        //можно передавать в виде массива либо строки несколько идентификаторов
-        Post::destroy(8);*/
+        $tag = Tag::query()->find(3);
+        //выводим название тега
+        dump($tag->title);
+        //проходимся массивом по постам связаными виртуальным свойством posts
+        foreach ($tag->posts as $post) {
+            //и выводим их названия
+            dump($post->title);
+        }*/
 
         //return view('home', ['res' => 30, 'name' => 'Andrey']);
     }
