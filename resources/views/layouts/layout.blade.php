@@ -53,7 +53,7 @@
 <main role="main">
 
     <div class="container">
-        @include('layouts.errors')
+        @include('layouts.alert')
     </div>
 
     @yield('contant');

@@ -11,8 +11,34 @@ use Illuminate\Support\Facades\Validator;
 class HomeController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        /*Запись данных в сессии
+         $request->session()->put('test', 'Test value');
+         session(['testArray' => [
+            ['id' => 1, 'test' => 'Test value 1'],
+            ['id' => 2, 'test' => 'Test value 2'],
+            ['id' => 3, 'test' => 'Test value 3']
+        ]]);
+
+        Чтение данных с сессии
+        dump(session('test'));
+        dump(session('testArray')[1]['test']);
+        dump($request->session()->get('testArray')[0]['test']);
+
+        Добавление данных в сессию не перезаписывая/удаляя предыдущие
+        $request->session()->push('testArray', ['id' => 4, 'test' => 'Test value 4']);
+
+        Удаление данных с сессии:
+        одновременно извлекает и удаляет значеие из сессии
+        dump($request->session()->pull('test'));
+        удаление части данных
+        $request->session()->forget('test');
+        удаление всех данных
+        $request->session()->flush();*/
+        //dump($request->session()->all());
+        dump(session()->all());
+
         $posts = Post::query()->orderBy('id', 'desc')->get();
         $title = 'Home page';
 
@@ -51,6 +77,8 @@ class HomeController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages)->validate();*/
 
         Post::query()->create($request->all());
+
+        $request->session()->flash('success', 'Save - OK');
         return redirect()->route('home');
     }
 }
