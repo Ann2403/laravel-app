@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Rubric;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
@@ -13,33 +15,39 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
-        /*Запись данных в сессии
-         $request->session()->put('test', 'Test value');
-         session(['testArray' => [
-            ['id' => 1, 'test' => 'Test value 1'],
-            ['id' => 2, 'test' => 'Test value 2'],
-            ['id' => 3, 'test' => 'Test value 3']
-        ]]);
+        /* Создание кук (время указывается в минутах)
+        Cookie::queue('name', 'Andrey', 5);
+        Распечатка кук
+        dump(Cookie::get('name'));
+        Удаление кук
+        Cookie::queue(Cookie::forget('name'));
+        Распечатка кук
+        dump($request->cookie('name'));*/
 
-        Чтение данных с сессии
-        dump(session('test'));
-        dump(session('testArray')[1]['test']);
-        dump($request->session()->get('testArray')[0]['test']);
+        /*
+        //Помещение даннх в кэш (время указывается в секундах)
+        Cache::put('testKey', 'testValue', 60);
+        //Безсрочное кєширование
+        Cache::forever('myLove', 'Andrey');
+        //Распечатка кэша по ключу
+        dump(Cache::get('myLove'));
+        //Получаем данные и удаляем их
+        dump(Cache::pull('testKey'));
+        //Удаление данных
+        dump(Cache::forget('testKey'));
+        //Полное очищение кэша
+        dump(Cache::flush());*/
 
-        Добавление данных в сессию не перезаписывая/удаляя предыдущие
-        $request->session()->push('testArray', ['id' => 4, 'test' => 'Test value 4']);
+        //Проверяем наличие кэша по ключу
+        if (Cache::has('posts')) {
+            $posts = Cache::get('posts');
+        } else{
+            //Делаем запрос к БД на вывод постов в обратном порядке
+            $posts = Post::query()->orderBy('id', 'desc')->get();
+            //Тоже безсрочное кэширование
+            Cache::put('posts', $posts);
+        }
 
-        Удаление данных с сессии:
-        одновременно извлекает и удаляет значеие из сессии
-        dump($request->session()->pull('test'));
-        удаление части данных
-        $request->session()->forget('test');
-        удаление всех данных
-        $request->session()->flush();*/
-        //dump($request->session()->all());
-        dump(session()->all());
-
-        $posts = Post::query()->orderBy('id', 'desc')->get();
         $title = 'Home page';
 
         return view('home', compact('title', 'posts'));
@@ -54,27 +62,11 @@ class HomeController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
         $this->validate($request, [
             'title' => 'required|min:5|max:100',
             'content' => 'required',
             'rubric_id' => 'integer'
         ]);
-
-
-       /* Настройка сообщений об ошибке валидации
-       $rules = [
-            'title' => 'required|min:5|max:100',
-            'content' => 'required',
-            'rubric_id' => 'integer'
-        ];
-        $messages = [
-            'title.required' => 'Заполните поле "Title"',
-            'title.min' => 'Поле "Title" должно содержать больше 5 символов',
-            'content.required' => 'Заполните поле "Content"',
-            'rubric_id.integer' => 'Выберите рубрику из предложеных'
-        ];
-        $validator = Validator::make($request->all(), $rules, $messages)->validate();*/
 
         Post::query()->create($request->all());
 
