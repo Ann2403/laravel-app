@@ -11,7 +11,19 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+/*
+mix.js('resources/front/js/jquery-3.5.1.slim.js', 'public/js')
+    .js('resources/front/js/bootstrap.js', 'public/js')
+    .postCss('resources/front/css/bootstrap.css', 'public/css')
+    .postCss('resources/front/css/main.css', 'public/css')
+    .copyDirectory('resources/front/img', 'public/img');
+*/
+//Обьединение файлов в один для уменьшения HTTP запросов и ускоряя работу приложения
+mix.styles([
+        'resources/front/css/bootstrap.css',
+        'resources/front/css/main.css'
+    ], 'public/css/styles.css');
+
+mix.copyDirectory('resources/front/img', 'public/img');
+
+mix.browserSync('laravel-app');
