@@ -4,8 +4,7 @@
     @parent:: {{ $title }}
 @endsection
 
-
-@section('contant')
+@section('content')
     <section class="jumbotron text-center">
         <div class="container">
             <h1> {{ mb_strtoupper($title) }}</h1>
@@ -43,5 +42,4 @@
             </div>
         </div>
     </div>
-
 @endsection

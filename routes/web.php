@@ -22,6 +22,9 @@ Route::post('/', [HomeController::class, 'store'])->name('posts.store');
 use App\Http\Controllers\PageController;
 Route::get('/page/about', [PageController::class, 'show'])->name('page.about');
 
+//Route::get('/send', [\App\Http\Controllers\ContactController::class, 'send']);
+
+Route::match(['get', 'post'], '/send', [\App\Http\Controllers\ContactController::class, 'send'])->name('send');
 
 Route::fallback(function () {
     abort(404, 'Oops! Page not found...');

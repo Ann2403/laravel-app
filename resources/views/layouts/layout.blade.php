@@ -52,7 +52,7 @@
         @include('layouts.alert')
     </div>
 
-    @yield('contant');
+    @yield('content');
 
 </main>
 

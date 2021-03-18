@@ -4,7 +4,7 @@
     @parent:: {{ $title }}
 @endsection
 
-@section('contant')
+@section('content')
 
     <div class="container mt-4">
         <form method="post" action="{{ route('posts.store') }}">
