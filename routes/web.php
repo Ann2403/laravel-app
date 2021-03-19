@@ -23,8 +23,18 @@ use App\Http\Controllers\PageController;
 Route::get('/page/about', [PageController::class, 'show'])->name('page.about');
 
 //Route::get('/send', [\App\Http\Controllers\ContactController::class, 'send']);
-
 Route::match(['get', 'post'], '/send', [\App\Http\Controllers\ContactController::class, 'send'])->name('send');
+
+use App\Http\Controllers\UserController;
+Route::get('/registration', [UserController::class, 'registration'])->name('registration');
+Route::post('/registration', [UserController::class, 'storeReg'])->name('registration.store');
+
+Route::get('/login', [UserController::class, 'loginForm'])->name('login.form');
+Route::post('/login', [UserController::class, 'storeLog'])->name('login.store');
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
+use App\Http\Controllers\Admin\MainController;
+Route::get('/admin', [MainController::class, 'index'])->name('admin');
 
 Route::fallback(function () {
     abort(404, 'Oops! Page not found...');
