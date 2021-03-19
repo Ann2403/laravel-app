@@ -47,7 +47,12 @@
                 <a href="{{ route('login.form') }}" class="text-white">Login</a>
             @endif--}}
             @auth
-                <a href="#" class="text-white">{{ auth()->user()->name }}</a>
+                <a href="#" class="text-white">
+                    @if(auth()->user()->avatar)
+                        <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="avatar" height="40px">
+                    @endif
+                    {{ auth()->user()->name }}
+                </a>
                 <a href="{{ route('logout') }}" class="text-white">Logout</a>
             @endauth
             @guest

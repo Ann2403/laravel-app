@@ -21,13 +21,21 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed',
+            'avatar' => 'nullable|image',
         ]);
+
+        if($request->hasFile('avatar')) {
+            $folderName = date('Y-m-d');
+            //сохраняем картинку в папку "images/{$folderName}" в 'storage/public'
+            $avatar = $request->file('avatar')->store("images/{$folderName}");
+        }
 
         $user = User::query()->create([
             'name' => $request->name,
             'email' => $request->email,
             //хешируем пароль
             'password' => Hash::make($request->password),
+            'avatar' => $avatar ?? null, //$avatar ? $avatar : nul
         ]);
 
         session()->flash('success', 'Successful registration');
