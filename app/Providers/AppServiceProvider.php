@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Rubric;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +26,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        //для отображения пагинации стилями Bootstrap
+        //по умолчания используется Tailwind
+        Paginator::useBootstrap();
 
          /*//распечатка всех sql запросов
           DB::listen(function ($query) {

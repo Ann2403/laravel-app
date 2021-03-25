@@ -15,39 +15,8 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
-        /* Создание кук (время указывается в минутах)
-        Cookie::queue('name', 'Andrey', 5);
-        Распечатка кук
-        dump(Cookie::get('name'));
-        Удаление кук
-        Cookie::queue(Cookie::forget('name'));
-        Распечатка кук
-        dump($request->cookie('name'));*/
-
-        /*
-        //Помещение даннх в кэш (время указывается в секундах)
-        Cache::put('testKey', 'testValue', 60);
-        //Безсрочное кєширование
-        Cache::forever('myLove', 'Andrey');
-        //Распечатка кэша по ключу
-        dump(Cache::get('myLove'));
-        //Получаем данные и удаляем их
-        dump(Cache::pull('testKey'));
-        //Удаление данных
-        dump(Cache::forget('testKey'));
-        //Полное очищение кэша
-        dump(Cache::flush());*/
-
-        //Проверяем наличие кэша по ключу
-        if (Cache::has('posts')) {
-            $posts = Cache::get('posts');
-        } else{
-            //Делаем запрос к БД на вывод постов в обратном порядке
-            $posts = Post::query()->orderBy('id', 'desc')->get();
-            //Тоже безсрочное кэширование
-            Cache::put('posts', $posts);
-        }
-
+        // выводим пост по 6 штук (пагинация)
+        $posts = Post::query()->orderBy('id', 'desc')->paginate(6);
         $title = 'Home page';
 
         return view('home', compact('title', 'posts'));
