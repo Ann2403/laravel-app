@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -36,5 +37,18 @@ class Post extends Model
     public function getPostDate()
     {
         return Carbon::parse($this->created_at)->diffForHumans();
+    }
+
+    //перехват данных перед внесем в БД (аналог сетера)
+    public function setTitleAttribute($value) {
+        //приводим полученое значение к стилю titlе (каждое слово с большой буквы)
+        //и заносим его в колонку(attributes) title
+        $this->attributes['title'] = Str::title($value);
+    }
+
+    //перехват данных перед выводом с БД (аналог гетера)
+    public function getTitleAttribute($value) {
+        //приводим значение с БД в верхний регистр
+        return Str::upper($value);
     }
 }

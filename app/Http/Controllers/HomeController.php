@@ -16,7 +16,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         // выводим пост по 6 штук (пагинация)
-        $posts = Post::query()->orderBy('id', 'desc')->paginate(6);
+        $posts = Post::query()->orderBy('created_at', 'desc')->paginate(6);
         $title = 'Home page';
 
         return view('home', compact('title', 'posts'));
