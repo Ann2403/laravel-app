@@ -44,8 +44,8 @@
                     {{--добавляем еще один get параметр и хеш к url
                     {{ $posts->appends(['test' => request()->test])->fragment('users')->links() }}
                     добавляем вид со стилями для пагинации
-                    --}}
-                    {{ $posts->links('vendor.pagination.bootstrap-4') }}
+                    {{ $posts->links('vendor.pagination.bootstrap-4') }} --}}
+                    {{ $posts->onEachSide(1)->links() }}
                 </div>
             </div>
         </div>
