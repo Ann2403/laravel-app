@@ -47,6 +47,13 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
+        //создаем свой канал для записи логов sql запросов в отдельный файл
+        'sqlloqs' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/sql.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
